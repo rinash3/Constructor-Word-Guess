@@ -13,6 +13,6 @@ function Letter(letter) {
             return this.letter
         }
     }
-  }
-  
-  module.exports = Letter
+}
+
+module.exports = Letter

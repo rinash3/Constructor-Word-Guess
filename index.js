@@ -1,16 +1,16 @@
 var Word = require("./word.js");
 var inquirer = require("inquirer")
 
-var wordArray = ["sloth", "ladybug", "stork", "dingo", "tapir", "moose", "skink", "goose", "marmoset", "dolphin" ];
-var randomWord = "";
-var leftToGuess;
+var wordToSelect = ["cat", "dog", "beaver", "duck", "sloth", "ladybug", "stork", "dingo", "tapir", "moose", "skink", "goose", "marmoset", "dolphin", ];
+var display = "";
 var finalWord;
-var lives = 6
+var leftToGuess;
+var lives = 10;
 
-function newGame() {
-    randomWord = "";
-    var r = parseInt(Math.floor(Math.random() * (wordArray.length)))
-    randomWord = wordArray[r]
+function startGame() {
+  randomWord = "";
+   var r = parseInt(Math.floor(Math.random() * (wordToSelect.length)))
+   randomWord = wordToSelect[r]
     finalWord = new Word(randomWord)
     leftToGuess = finalWord.letterArr.length
 }
@@ -24,36 +24,37 @@ function gameOver() {
             message: "Would you like to play again?"
         }]).then(function (response) {
             if (response.playAgain) {
-                newGame()
+                startGame()
                 print()
                 askGuess();
             } else {
-                console.log("Ok,have a great day!")
+                console.log("Ok, see you around!")
             }
         })
     }
 }
 
 function displayWord() {
-    displayWord = finalWord.createWordString()
-    console.log(displayWord);
-    finalWord.compare = displayWord
+    display = finalWord.createWordString()
+    console.log(display);
+    finalWord.compare = display
 }
 
 
 function askGuess() {
     inquirer.prompt([{
+        type:"input",
         name: "ask",
         message: "Guess a letter"
     }]).then(function (response) {
-        var userInput = response.ask
+        var input = response.ask
         if (lives > 0) {
-            if (userInput.length === 1) {
-                finalWord.guessCheck(userInput)
-                displayWord = finalWord.createWordString()
+            if (input.length === 1) {
+                finalWord.guessCheck(input)
+                display = finalWord.createWordString()
 
-                if (finalWord.compare === displayWord) {
-                    console.log("Nope, there is no", userInput, "in the word")
+                if (finalWord.compare === display) {
+                    console.log("There is no", input, "in the word")
                     lives--
                     console.log("You have", lives, "guesse(s) remaining.")
                     if (lives === 0) {
@@ -63,28 +64,28 @@ function askGuess() {
                         askGuess()
                     }
                    
-                } else {
-                    console.log("Good choice!")
+                }else {
+                    console.log("Good guess!")
                     leftToGuess--
                     print();
                     if (leftToGuess === 0) {
 
-                        console.log("Great Job! Here's the next word:");
-                        newGame()
+                        console.log("Great Job!");
+                        startGame()
                         print();
                         askGuess();
                     } else {
                         askGuess()
-                    }
-                }
+            }
+           }
 
-            } else if (userInput.length === 0) {
-                consoel.log("Please choose a letter.");
+            } else if (input.length === 0) {
+                consoel.log("Please select a letter.");
                 askGuess()
             } else {
-                console.log("Pick one letter at a time please.")
+                console.log("One letter at a time please.")
                 askGuess()
-            }
+      }
 
 
         } else {
@@ -95,11 +96,11 @@ function askGuess() {
 
 function print() {
     console.log("\n")
-    console.log("******************************************")
-    console.log(displayWord);
-    console.log("\n*****************************************")
+ 
+    displayWord()
+  
     console.log("\n")
 }
-newGame()
+startGame()
 print()
 askGuess();
