@@ -3,9 +3,8 @@ var inquirer = require("inquirer")
 
 var wordArray = ["sloth", "ladybug", "stork", "dingo", "tapir", "moose", "skink", "goose", "marmoset", "dolphin" ];
 var randomWord = "";
-var displayWord = "";
-var finalWerd;
 var leftToGuess;
+var finalWord;
 var lives = 6
 
 function newGame() {
@@ -47,14 +46,14 @@ function askGuess() {
         name: "ask",
         message: "Guess a letter"
     }]).then(function (response) {
-        var input = response.ask
+        var userInput = response.ask
         if (lives > 0) {
-            if (input.length === 1) {
-                finalWerd.guessCheck(input)
-                displayWord = finalWerd.createWerdString()
+            if (userInput.length === 1) {
+                finalWord.guessCheck(userInput)
+                displayWord = finalWord.createWordString()
 
-                if (finalWerd.compare === displayWord) {
-                    console.log("Nope, there is no", input, "in the word")
+                if (finalWord.compare === displayWord) {
+                    console.log("Nope, there is no", userInput, "in the word")
                     lives--
                     console.log("You have", lives, "guesse(s) remaining.")
                     if (lives === 0) {
@@ -75,15 +74,15 @@ function askGuess() {
                         print();
                         askGuess();
                     } else {
-                        ToGuess()
+                        askGuess()
                     }
                 }
 
-            } else if (input.length === 0) {
+            } else if (userInput.length === 0) {
                 consoel.log("Please choose a letter.");
                 askGuess()
             } else {
-                console.log("Pick one letter a a time please.")
+                console.log("Pick one letter at a time please.")
                 askGuess()
             }
 
@@ -97,7 +96,7 @@ function askGuess() {
 function print() {
     console.log("\n")
     console.log("******************************************")
-    displayWord()
+    console.log(displayWord);
     console.log("\n*****************************************")
     console.log("\n")
 }
